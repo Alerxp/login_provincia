@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.conf import settings
 import jwt, time, random, string
 
@@ -13,6 +13,13 @@ def login_view(request):
         
         user = authenticate(username=username, password=password)
         if user is not None:
+            login(request, user)
+
+            if user.is_staff:
+                # Usuario administrador: redirigir al panel de administración
+                return redirect('/admin/')
+
+            # Usuario director: generar JWT y redirigir al sistema nacional
             payload = {
                 'user_id': user.id,
                 'nombre': user.first_name,
@@ -30,5 +37,5 @@ def login_view(request):
             return render(request, 'loginapp/login.html', {
                 'error': 'Credenciales inválidas'
             })
-    
+
     return render(request, 'loginapp/login.html')
