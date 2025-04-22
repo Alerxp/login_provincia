@@ -32,8 +32,9 @@ class Command(BaseCommand):
                         self.stderr.write(f"Fila inválida (faltan campos): {fila}")
                         errores += 1
                         continue
-
-                    user, creado = User.objects.get_or_create(username=email, defaults={
+                    
+                    # CUIL como usuario
+                    user, creado = User.objects.get_or_create(username=cuil, defaults={
                         'email': email,
                         'first_name': nombre,
                         'last_name': apellido

@@ -8,10 +8,10 @@ def generar_jti():
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        cuil = request.POST.get('username') # en el form sigue llamándose "username"
+        password = request.POST.get('password') # que también será el CUIL
         
-        user = authenticate(username=username, password=password)
+        user = authenticate(username=cuil, password=password)
         if user is not None:
             login(request, user)
 
