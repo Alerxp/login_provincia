@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-axyua*ln6tory8^@-mnzyr2+x7xniepnt4yyd9#)ikiv#q$*!c
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
-
-ALLOWED_HOSTS = []
+# Remplazar login.provincia.gob.ar por dominio real
+ALLOWED_HOSTS = ['login.provincia.gob.ar', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -128,3 +128,13 @@ JWT_SECRET = config('JWT_SECRET')
 
 LANGUAGE_CODE = 'es-ar'
 TIME_ZONE = 'America/Argentina/Buenos_Aires'
+
+"""
+# Seguridad para producción
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+"""

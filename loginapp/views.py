@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login
 from django.conf import settings
 import jwt, time, random, string
 
+def root_redirect(request):
+    return redirect('/login/')
+
 def generar_jti():
     return ''.join(random.choices(string.ascii_letters + string.digits, k=32))
 
