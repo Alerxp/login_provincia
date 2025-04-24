@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from os.path import join
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-axyua*ln6tory8^@-mnzyr2+x7xniepnt4yyd9#)ikiv#q$*!c
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
-# Remplazar login.provincia.gob.ar por dominio real
+# Remplazar login.provincia.gob.ar por dominio real y 127.0.0.1 por IP del VPS
 ALLOWED_HOSTS = ['login.provincia.gob.ar', 'localhost', '127.0.0.1']
 
 
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'loginprovincia.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [join(BASE_DIR, 'loginapp/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,7 +117,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+# STATICFILES_DIRS = [join(BASE_DIR, 'static')]  # (si tenés archivos propios)
+STATIC_ROOT = join(BASE_DIR, 'staticfiles')    # para collectstatic
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

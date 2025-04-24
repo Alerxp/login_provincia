@@ -1,0 +1,51 @@
+{% extends "admin/index.html" %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <style>
+        /* Mueve el botón al inicio, debajo del título "Administración de sitio" */
+        .custom-button-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        /* Opcional: Ajusta el estilo del botón */
+        .custom-button {
+        background-color: #2b6cb0;
+        color: #fff !important;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+        }
+
+        .custom-button:hover {
+            background-color: #2c5282;  /* Azul más oscuro al pasar el mouse */
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const url = "{% url 'importar_directores' %}";
+            const existingButtons = document.querySelectorAll(`a[href="${url}"]`);
+            
+            if (existingButtons.length === 0) {
+                const button = document.createElement('a');
+                button.href = url;
+                button.className = "custom-button";
+                button.textContent = "Importar Directores desde CSV";
+
+                const container = document.createElement('div');
+                container.className = "custom-button-container";
+                container.appendChild(button);
+
+                // Inserta el botón después del título principal
+                const title = document.querySelector('h1');
+                if (title) {
+                    title.insertAdjacentElement('afterend', container);
+                }
+            }
+        });
+    </script>
+{% endblock %}
