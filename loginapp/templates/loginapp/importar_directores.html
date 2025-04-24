@@ -1,6 +1,12 @@
 {% extends "admin/base_site.html" %}
 {% load static %}
 
+{% block title %}Importar Directores{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name"><a href="{% url 'admin:index' %}">Sistema Provincial</a></h1>
+{% endblock %}
+
 {% block content %}
 <style>
     .form-container {
