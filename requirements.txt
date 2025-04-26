@@ -1,0 +1,5 @@
+# Django core framework
+Django>=4.2,<5.0
+
+# Para leer .env y manejar configuraciones
+python-decouple>=3.8
