@@ -13,14 +13,41 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5; /* Fondo gris claro */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: #f5f5f5;
             height: 100vh;
+            overflow: hidden;
+            position: relative;
         }
 
+        /* Fondo desenfocado */
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{% static 'img/fondo-educacion.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            filter: blur(3px);
+            z-index: 1;
+        }
+
+        /* Capa de oscurecimiento */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 245, 245, 0.6);
+            z-index: 2;
+        }
+
+        /* Contenedor de login */
         .login-container {
+            position: relative;
+            z-index: 3;
             background-color: #ffffff;
             padding: 40px;
             border-radius: 10px;
@@ -28,14 +55,34 @@
             width: 100%;
             max-width: 400px;
             text-align: center;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%) scale(0.95);
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards; /* 🎬 Animación suave */
+        }
+
+        /* Animación fadeInUp */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
         }
 
         .logo-container {
             margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ccc;
         }
 
         .logo-container img {
-            width: 250px;
+            width: 100%;
+            max-width: 350px;
             height: auto;
         }
 
@@ -48,7 +95,7 @@
 
         h2 {
             margin: 25px 0 20px;
-            color: #003366; /* Azul oscuro */
+            color: #003366;
             font-size: 22px;
         }
 
@@ -69,7 +116,7 @@
             font-size: 16px;
             font-weight: bold;
             color: white;
-            background-color: #0056b8; /* Azul institucional */
+            background-color: #0056b8;
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -78,7 +125,7 @@
         }
 
         button:hover {
-            background-color: #003d80; /* Azul más oscuro */
+            background-color: #003d80;
             transform: translateY(-2px);
         }
 
@@ -87,24 +134,18 @@
             font-weight: bold;
             margin-bottom: 15px;
         }
-
-        .logo-container img {
-            width: 100%;
-            max-width: 320px;
-            height: auto;
-        }
-
     </style>
 </head>
 
 <body>
+    <div class="background-image"></div>
+    <div class="overlay"></div>
+
     <div class="login-container">
         <div class="logo-container">
-            <!-- Logo nuevo -->
             <img src="{% static 'img/logo-gob-sj.png' %}" alt="Gobierno de San Juan">
         </div>
 
-        <!-- Subtítulos -->
         <div class="subtitle">SUBSECRETARÍA DE PLANEAMIENTO EDUCATIVO</div>
         <div class="subtitle">EVALUACIÓN Y ESTADÍSTICA EDUCATIVA</div>
 
