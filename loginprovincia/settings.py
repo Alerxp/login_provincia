@@ -120,7 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [join(BASE_DIR, 'static')]  # (si tenés archivos propios)
+STATICFILES_DIRS = [join(BASE_DIR, 'static')]  # (si tenés archivos propios)
 STATIC_ROOT = join(BASE_DIR, 'staticfiles')    # para collectstatic
 
 # Default primary key field type
