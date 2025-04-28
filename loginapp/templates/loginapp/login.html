@@ -58,8 +58,12 @@
             margin: auto;
             top: 50%;
             transform: translateY(-50%) scale(0.95);
+            opacity: 1;
+        }
+
+        .animar {
             opacity: 0;
-            animation: fadeInUp 1s ease forwards; /* 🎬 Animación suave */
+            animation: fadeInUp 1s ease forwards;
         }
 
         /* Animación fadeInUp */
@@ -134,14 +138,47 @@
             font-weight: bold;
             margin-bottom: 15px;
         }
+
+        .input-error {
+            border: 2px solid #FF8400 !important; /* Borde más grueso y naranja */
+            background-color: #fff8f0; /* Fondo apenas más claro para resaltarlo */
+        }
+
+        /* (Opcional) Animación leve para campos con error */
+        .input-error {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        /* Definición de animación shake */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
     </style>
 </head>
+
+<script>
+    // Esperar que cargue todo el documento
+    document.addEventListener('DOMContentLoaded', function () {
+        // Seleccionamos todos los inputs
+        var inputs = document.querySelectorAll('input');
+
+        inputs.forEach(function(input) {
+            input.addEventListener('focus', function() {
+                input.classList.remove('input-error'); // Cuando hacen foco, quitamos la clase de error
+            });
+        });
+    });
+</script>
 
 <body>
     <div class="background-image"></div>
     <div class="overlay"></div>
 
-    <div class="login-container">
+    <div class="login-container {% if not error %}animar{% endif %}">
         <div class="logo-container">
             <img src="{% static 'img/logo-gob-sj.png' %}" alt="Gobierno de San Juan">
         </div>
@@ -157,8 +194,8 @@
 
         <form method="post">
             {% csrf_token %}
-            <input type="text" name="username" placeholder="CUIL" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
+            <input type="text" name="username" placeholder="CUIL" required class="{% if error %}input-error{% endif %}">
+            <input type="password" name="password" placeholder="Contraseña" required class="{% if error %}input-error{% endif %}">
             <button type="submit">Ingresar</button>
         </form>
     </div>
