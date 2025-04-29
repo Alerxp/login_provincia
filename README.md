@@ -83,6 +83,22 @@ gunicorn loginprovincia.wsgi:application --bind 0.0.0.0:8000
 
 ---
 
+## 📁 6. Importar Directores desde CSV
+
+1. Iniciar sesión como superusuario en el panel admin
+2. Hacer clic en el botón **“Importar Directores desde CSV”**
+3. Subir un archivo `.csv` con este formato:
+
+```
+email,cuil,nombre,apellido,cues
+```
+
+- `cuil` se usa como usuario y contraseña
+- `cues` puede contener varios valores separados por `;`
+- Los usuarios existentes se actualizan; los nuevos se crean
+
+---
+
 ## 🧾 Archivos importantes
 
 | Archivo                | Descripción                                         |
