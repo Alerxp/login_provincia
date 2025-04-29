@@ -35,7 +35,7 @@ def login_view(request):
             }
 
             token = jwt.encode(payload, settings.JWT_SECRET, algorithm='HS256')
-            return redirect(f'https://censo-demo.die.educacion.gob.ar/login?token={token}')
+            return redirect(f'{settings.LOGIN_REDIRECT_URL}?token={token}')
         else:
             return render(request, 'loginapp/login.html', {
                 'error': 'Credenciales inválidas'

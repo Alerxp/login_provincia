@@ -38,9 +38,10 @@ Crear un archivo `.env.production` en la raíz del proyecto con el siguiente con
 
 ```env
 DEBUG=False
-SECRET_KEY=tu_clave_secreta_segura
-JWT_SECRET=clave_jwt_unica_y_segura
+SECRET_KEY=tu_clave_secreta_de_django
+JWT_SECRET=clave_compartida_con_sistema_nacional
 ALLOWED_HOSTS=login.provincia.gob.ar,127.0.0.1,localhost
+LOGIN_REDIRECT_URL=https://censo-demo.die.educacion.gob.ar/login
 ```
 
 ---

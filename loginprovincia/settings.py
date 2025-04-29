@@ -21,15 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-SECRET_KEY = config('SECRET_KEY')
-
 DEBUG = config('DEBUG', default=False, cast=bool)
-
+SECRET_KEY = config('SECRET_KEY')
+JWT_SECRET = config('JWT_SECRET')    # Clave compartida con el sistema nacional para firmar los JWT
 ALLOWED_HOSTS = config(
     'ALLOWED_HOSTS',
     default='127.0.0.1,localhost',
     cast=lambda v: [s.strip() for s in v.split(',')]
 )
+LOGIN_REDIRECT_URL = config('LOGIN_REDIRECT_URL')    # URL  del sistema nacional
 
 
 # Application definition
@@ -127,9 +127,6 @@ STATIC_ROOT = join(BASE_DIR, 'staticfiles')    # para collectstatic (producción
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Clave compartida con el sistema nacional para firmar los JWT
-JWT_SECRET = config('JWT_SECRET')
 
 LANGUAGE_CODE = 'es-ar'
 TIME_ZONE = 'America/Argentina/Buenos_Aires'
