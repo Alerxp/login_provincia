@@ -18,8 +18,8 @@ Este proyecto es un microservicio de autenticación desarrollado con Django, que
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/Alerxp/login_provincial.git
-cd login_provincial
+git clone https://github.com/Alerxp/login_provincia.git
+cd login_provincia
 
 # Crear entorno virtual
 python -m venv venv
@@ -41,7 +41,7 @@ DEBUG=False
 SECRET_KEY=tu_clave_secreta_de_django
 JWT_SECRET=clave_compartida_con_sistema_nacional
 ALLOWED_HOSTS=login.provincia.gob.ar,127.0.0.1,localhost
-LOGIN_REDIRECT_URL=https://censo-demo.die.educacion.gob.ar/login
+LOGIN_REDIRECT_URL=https://censo-demo.die.educacion.gob.ar/relevamientos-docentes
 ```
 
 ---
