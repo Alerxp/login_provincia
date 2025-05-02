@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 import dj_database_url
 from pathlib import Path
 from decouple import config
-from os.path import join
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,11 +25,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = config('DEBUG', default=False, cast=bool)
 SECRET_KEY = config('SECRET_KEY')
 JWT_SECRET = config('JWT_SECRET')    # Clave compartida con el sistema nacional para firmar los JWT
-ALLOWED_HOSTS = config(
-    'ALLOWED_HOSTS',
-    default='127.0.0.1,localhost',
-    cast=lambda v: [s.strip() for s in v.split(',')]
-)
+# ALLOWED_HOSTS = config(
+#     'ALLOWED_HOSTS',
+#     default='127.0.0.1,localhost',
+#     cast=lambda v: [s.strip() for s in v.split(',')]
+# )
+
+ALLOWED_HOSTS = []
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 LOGIN_REDIRECT_URL = config('LOGIN_REDIRECT_URL')    # URL  del sistema nacional
 
 
@@ -61,7 +68,7 @@ ROOT_URLCONF = 'loginprovincia.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [join(BASE_DIR, 'loginapp/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'loginapp/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,10 +133,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [join(BASE_DIR, 'static')]  # desarrollo
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # desarrollo
 
 if not DEBUG:
-    STATIC_ROOT = join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
