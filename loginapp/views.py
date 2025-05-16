@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.conf import settings
-import jwt, time, random, string
+import jwt, time, random, string, requests
 
 def root_redirect(request):
     return redirect('/login/')
@@ -35,7 +35,32 @@ def login_view(request):
             }
 
             token = jwt.encode(payload, settings.JWT_SECRET, algorithm='HS256')
-            return redirect(f'{settings.LOGIN_REDIRECT_URL}?token={token}')
+            
+            # Enviar POST al sistema nacional
+            try:
+                response = requests.post(
+                    settings.LOGIN_REDIRECT_URL,
+                    json={'token': token},
+                    timeout=10
+                )
+
+                if response.status_code == 200:
+                    data = response.json()
+                    final_url = data.get('url')
+                    if final_url:
+                        return redirect(final_url)
+                    else:
+                        return render(request, 'loginapp/login.html', {
+                            'error': 'El sistema nacional no devolvió una URL válida.'
+                        })
+                else:
+                    return render(request, 'loginapp/login.html', {
+                        'error': f'Error desde sistema nacional ({response.status_code})'
+                    })
+            except requests.RequestException as e:
+                return render(request, 'loginapp/login.html', {
+                    'error': f'No se pudo conectar con sistema nacional: {e}'
+                })
         else:
             return render(request, 'loginapp/login.html', {
                 'error': 'Credenciales inválidas'
