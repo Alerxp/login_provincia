@@ -37,13 +37,19 @@ def login_view(request):
             }
 
             token = jwt.encode(payload, settings.JWT_SECRET, algorithm='HS256')
+
+            headers = {
+                'Authorization': f'Bearer {token}',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }
             
             # Enviar POST al sistema nacional
             try:
                 response = requests.post(
                     settings.LOGIN_REDIRECT_URL,
                     # json={'token': token},
-                    headers={'Authorization': f'Bearer {token}'},
+                    headers=headers,
                     timeout=10
                 )
 
