@@ -36,7 +36,14 @@ def login_view(request):
                 'exp': time.time() + 300  # 5 minutos
             }
 
-            token = jwt.encode(payload, settings.JWT_SECRET, algorithm='HS256')
+            # token = jwt.encode(payload, settings.JWT_SECRET, algorithm='HS256')
+
+            token = jwt.encode(
+                payload,
+                settings.JWT_SECRET,
+                algorithm='HS256',
+                headers={"typ": "JWT"}
+            )
 
             headers = {
                 'Authorization': f'Bearer {token}',
