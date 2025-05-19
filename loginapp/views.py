@@ -42,7 +42,8 @@ def login_view(request):
             try:
                 response = requests.post(
                     settings.LOGIN_REDIRECT_URL,
-                    json={'token': token},
+                    # json={'token': token},
+                    headers={'Authorization': f'Bearer {token}'},
                     timeout=10
                 )
 
@@ -59,7 +60,8 @@ def login_view(request):
                     logger.error(f"[POST ERROR] Código {response.status_code} - Contenido: {response.text}")
                     
                     return render(request, 'loginapp/login.html', {
-                        'error': f'Error desde sistema nacional ({response.status_code})'
+                        # 'error': f'Error desde sistema nacional ({response.status_code})'
+                        'error': 'Error desde sistema nacional. Por favor, intente nuevamente más tarde.'
                     })
             except requests.RequestException as e:
                 return render(request, 'loginapp/login.html', {
