@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.conf import settings
-import jwt, time, random, string, requests
+import jwt, time, random, string, requests, logging
+
+logger = logging.getLogger(__name__)
 
 def root_redirect(request):
     return redirect('/login/')
@@ -54,6 +56,8 @@ def login_view(request):
                             'error': 'El sistema nacional no devolvió una URL válida.'
                         })
                 else:
+                    logger.error(f"[POST ERROR] Código {response.status_code} - Contenido: {response.text}")
+                    
                     return render(request, 'loginapp/login.html', {
                         'error': f'Error desde sistema nacional ({response.status_code})'
                     })
