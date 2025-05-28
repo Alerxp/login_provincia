@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.conf import settings
-import jwt, time, random, string, requests, logging
+import jwt, random, string, requests, logging
 
 logger = logging.getLogger(__name__)
 
@@ -13,30 +13,25 @@ def generar_jti():
 
 def login_view(request):
     if request.method == 'POST':
-        cuil = request.POST.get('username') # en el form sigue llamándose "username"
-        password = request.POST.get('password') # que también será el CUIL
-        
+        cuil = request.POST.get('username')
+        password = request.POST.get('password')
+
         user = authenticate(username=cuil, password=password)
         if user is not None:
             login(request, user)
 
             if user.is_staff:
-                # Usuario administrador: redirigir al panel de administración
                 return redirect('/admin/')
 
-            # Usuario director: generar JWT y redirigir al sistema nacional
-            payload = {
-                'user_id': user.id,
-                'nombre': user.first_name,
-                'apellido': user.last_name,
-                'email': user.email,
-                'login': user.username,
-                'CUE': [c.cue for c in user.cues.all()],
-                'jti': generar_jti(),
-                'exp': time.time() + 300  # 5 minutos
-            }
+            # 🔐 Generar payload según documentación de Nación
+            cues_formateados = [cue.formato_completo() for cue in user.cues.all()]
 
-            # token = jwt.encode(payload, settings.JWT_SECRET, algorithm='HS256')
+            payload = {
+                "CUIL": user.username,  # el username es el CUIL
+                "nombre": user.first_name,
+                "apellido": user.last_name,
+                "CUES": cues_formateados
+            }
 
             token = jwt.encode(
                 payload,
@@ -46,17 +41,16 @@ def login_view(request):
             )
 
             headers = {
-                'Authorization': f'Bearer {token}',
+                'typ': 'jwt',
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
+                'Accept': 'application/json'
             }
-            
-            # Enviar POST al sistema nacional
+
             try:
                 response = requests.post(
                     settings.LOGIN_REDIRECT_URL,
-                    # json={'token': token},
                     headers=headers,
+                    json={'token': token},
                     timeout=10
                 )
 
@@ -71,15 +65,16 @@ def login_view(request):
                         })
                 else:
                     logger.error(f"[POST ERROR] Código {response.status_code} - Contenido: {response.text}")
-                    
                     return render(request, 'loginapp/login.html', {
-                        # 'error': f'Error desde sistema nacional ({response.status_code})'
                         'error': 'Error desde sistema nacional. Por favor, intente nuevamente más tarde.'
                     })
+
             except requests.RequestException as e:
+                logger.exception("Error de conexión con el sistema nacional:")
                 return render(request, 'loginapp/login.html', {
                     'error': f'No se pudo conectar con sistema nacional: {e}'
                 })
+
         else:
             return render(request, 'loginapp/login.html', {
                 'error': 'Credenciales inválidas'
@@ -130,10 +125,23 @@ def importar_directores_view(request):
                         nuevos += 1
 
                     CUEUsuario.objects.filter(user=user).delete()
-                    for cue in cues:
-                        CUEUsuario.objects.create(user=user, cue=cue)
 
-                except Exception:
+                    for cue_str in cues:
+                        partes = cue_str.split('-')
+                        cue = partes[0]
+                        anexo = partes[1] if len(partes) > 1 else None
+                        modalidad = partes[2] if len(partes) > 2 else None
+                        nivel = partes[3] if len(partes) > 3 else None
+
+                        CUEUsuario.objects.create(
+                            user=user,
+                            cue=cue,
+                            anexo=anexo,
+                            modalidad=modalidad,
+                            nivel=nivel
+                        )
+
+                except Exception as e:
                     errores += 1
                     continue
 
