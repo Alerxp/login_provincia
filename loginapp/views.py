@@ -37,7 +37,6 @@ def login_view(request):
                 payload,
                 settings.JWT_SECRET,
                 algorithm='HS256',
-                headers={"typ": "JWT"}
             )
 
             headers = {
@@ -56,7 +55,7 @@ def login_view(request):
 
                 if response.status_code == 200:
                     data = response.json()
-                    final_url = data.get('url')
+                    final_url = data.get('access_link')
                     if final_url:
                         return redirect(final_url)
                     else:
