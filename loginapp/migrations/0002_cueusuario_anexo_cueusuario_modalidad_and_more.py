@@ -28,6 +28,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='cueusuario',
             name='cue',
-            field=models.CharField(max_length=7, verbose_name='CUE'),
+            field=models.CharField(max_length=18, verbose_name='CUE'),
         ),
     ]
