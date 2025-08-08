@@ -13,7 +13,7 @@ def generar_jti():
 
 def login_view(request):
     if request.method == 'POST':
-        cuil = request.POST.get('username')
+        cuil = request.POST.get('username', '').replace('-', '')
         password = request.POST.get('password')
 
         user = authenticate(username=cuil, password=password)
