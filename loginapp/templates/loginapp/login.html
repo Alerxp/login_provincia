@@ -178,34 +178,43 @@
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const cuilInput = document.getElementById("cuil");
-        const form = document.getElementById("login-form");
+document.addEventListener("DOMContentLoaded", function () {
+    const cuilInput = document.getElementById("cuil");
+    const form = document.getElementById("login-form");
 
-        // Formatear automáticamente el CUIL mientras escribe
-        cuilInput.addEventListener("input", function () {
-            let digits = this.value.replace(/\D/g, ""); // Solo números
+    // Formateo automático solo si no es "admin"
+    cuilInput.addEventListener("input", function () {
+        const valLower = this.value.toLowerCase();
 
-            // Formato: XX-XXXXXXXX-X
-            if (digits.length > 2) digits = digits.slice(0, 2) + "-" + digits.slice(2);
-            if (digits.length > 11) digits = digits.slice(0, 11) + "-" + digits.slice(11, 12);
-            if (digits.length > 13) digits = digits.slice(0, 13); // Limitar longitud
+        // Si el usuario está escribiendo "admin" (aunque sea parcial), no formatear
+        if ("admin".startsWith(valLower)) {
+            return;
+        }
 
-            this.value = digits;
-        });
-
-        // Validar CUIL al enviar el formulario
-        form.addEventListener("submit", function (e) {
-            const cuil = cuilInput.value.trim();
-            const cuilRegex = /^\d{2}-\d{8}-\d{1}$/;
-
-            if (!cuilRegex.test(cuil)) {
-                e.preventDefault();
-                alert("El CUIL ingresado debe tener el formato XX-XXXXXXXX-X");
-                cuilInput.focus();
-            }
-        });
+        // Si no es admin, forzar solo números y formatear CUIL
+        let digits = this.value.replace(/\D/g, "");
+        if (digits.length > 2) digits = digits.slice(0, 2) + "-" + digits.slice(2);
+        if (digits.length > 11) digits = digits.slice(0, 11) + "-" + digits.slice(11, 12);
+        if (digits.length > 13) digits = digits.slice(0, 13); // Limitar longitud
+        this.value = digits;
     });
+
+    // Validación al enviar
+    form.addEventListener("submit", function (e) {
+        const value = cuilInput.value.trim().toLowerCase();
+
+        // Permitir si es "admin"
+        if (value === "admin") return;
+
+        // Validar formato CUIL XX-XXXXXXXX-X
+        const cuilRegex = /^\d{2}-\d{8}-\d{1}$/;
+        if (!cuilRegex.test(value)) {
+            e.preventDefault();
+            alert("El CUIL ingresado no tiene el formato correcto. Debe ser XX-XXXXXXXX-X.");
+            cuilInput.focus();
+        }
+    });
+});
 </script>
 
 <body>
