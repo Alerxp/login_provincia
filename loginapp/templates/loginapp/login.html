@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Login Provincial</title>
 
-    <!-- Fuente Roboto de Google Fonts -->
+    <!-- Fuente Roboto -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
@@ -16,13 +16,14 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
+            background-color: #f7f7f7;
             height: 100vh;
             overflow: hidden;
             position: relative;
+            color: #333;
         }
 
-        /* Fondo desenfocado */
+        /* Fondo */
         .background-image {
             position: absolute;
             top: 0;
@@ -36,55 +37,34 @@
             z-index: 1;
         }
 
-        /* Capa de oscurecimiento */
         .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(245, 245, 245, 0.6);
+            background: rgba(245, 245, 245, 0.7);
             z-index: 2;
         }
 
-        /* Contenedor de login */
+        /* Contenedor login */
         .login-container {
             position: relative;
             z-index: 3;
-            background-color: #ffffff;
+            background-color: #fff;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             width: 100%;
             max-width: 400px;
             text-align: center;
             margin: auto;
             top: 50%;
-            transform: translateY(-50%) scale(0.95);
-            opacity: 1;
-        }
-
-        .animar {
-            opacity: 0;
-            animation: fadeInUp 1s ease forwards;
-        }
-
-        /* Animación fadeInUp */
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(-50%) scale(1);
-            }
+            transform: translateY(-50%);
         }
 
         .logo-container {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ccc;
+            margin-bottom: 15px;
         }
 
         .logo-container img {
@@ -94,36 +74,53 @@
         }
 
         .subtitle {
-            font-size: 16px;
+            font-size: 14px;
             color: #333;
-            margin: 5px 0;
-            font-weight: 500;
+            margin: 3px 0;
+            font-weight: 600;
         }
 
         h2 {
-            margin: 25px 0 20px;
-            color: #003366;
-            font-size: 22px;
+            margin: 30px 0 25px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            text-align: left;
+            margin-top: 16px;
+            margin-bottom: 6px;
+            font-size: 15px;
+            color: #666;
         }
 
         input[type="text"],
         input[type="password"] {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            font-size: 16px;
+            padding: 10px 12px;
+            font-size: 14px;
             border: 1px solid #ccc;
             border-radius: 6px;
             box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #69B3C3;
+            box-shadow: 0 0 0 2px rgba(105,179,195,0.2);
         }
 
         button {
-            width: 100%;
+            width: 50%;
             padding: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background-color: #0056b8;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            background-color: #69B3C3;
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -132,81 +129,49 @@
         }
 
         button:hover {
-            background-color: #003d80;
-            transform: translateY(-2px);
+            background-color: #4d8c9a;
         }
 
         .error {
-            color: #FF8400;
-            font-weight: bold;
+            background: #fdecea;
+            border: 1px solid #f5c2c0;
+            color: #E3342F;
+            padding: 10px;
+            border-radius: 6px;
             margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 500;
         }
 
         .input-error {
-            border: 2px solid #FF8400 !important; /* Borde más grueso y naranja */
-            background-color: #fff8f0; /* Fondo apenas más claro para resaltarlo */
-        }
-
-        /* Animación leve para campos con error */
-        .input-error {
-            animation: shake 0.3s ease-in-out;
-        }
-
-        /* Definición de animación shake */
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
+            border: 2px solid #E3342F !important;
+            background-color: #fff8f8;
         }
     </style>
 </head>
-
-<script>
-    // Esperar que cargue todo el documento
-    document.addEventListener('DOMContentLoaded', function () {
-        // Seleccionamos todos los inputs
-        var inputs = document.querySelectorAll('input');
-
-        inputs.forEach(function(input) {
-            input.addEventListener('focus', function() {
-                input.classList.remove('input-error'); // Cuando hacen foco, quitamos la clase de error
-            });
-        });
-    });
-</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const cuilInput = document.getElementById("cuil");
     const form = document.getElementById("login-form");
 
-    // Formateo automático solo si no es "admin"
     cuilInput.addEventListener("input", function () {
         const valLower = this.value.toLowerCase();
 
-        // Si el usuario está escribiendo "admin" (aunque sea parcial), no formatear
-        if ("admin".startsWith(valLower)) {
-            return;
-        }
+        // permitir "admin"
+        if ("admin".startsWith(valLower)) return;
 
-        // Si no es admin, forzar solo números y formatear CUIL
+        // formatear como CUIL
         let digits = this.value.replace(/\D/g, "");
         if (digits.length > 2) digits = digits.slice(0, 2) + "-" + digits.slice(2);
         if (digits.length > 11) digits = digits.slice(0, 11) + "-" + digits.slice(11, 12);
-        if (digits.length > 13) digits = digits.slice(0, 13); // Limitar longitud
+        if (digits.length > 13) digits = digits.slice(0, 13);
         this.value = digits;
     });
 
-    // Validación al enviar
     form.addEventListener("submit", function (e) {
         const value = cuilInput.value.trim().toLowerCase();
-
-        // Permitir si es "admin"
         if (value === "admin") return;
-
-        // Validar formato CUIL XX-XXXXXXXX-X
         const cuilRegex = /^\d{2}-\d{8}-\d{1}$/;
         if (!cuilRegex.test(value)) {
             e.preventDefault();
@@ -221,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="background-image"></div>
     <div class="overlay"></div>
 
-    <div class="login-container {% if not error %}animar{% endif %}">
+    <div class="login-container">
         <div class="logo-container">
             <img src="{% static 'img/logo-gob-sj.png' %}" alt="Gobierno de San Juan">
         </div>
@@ -237,9 +202,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         <form method="post" id="login-form">
             {% csrf_token %}
-            <input type="text" name="username" id="cuil" placeholder="CUIL" maxlength="13" required class="{% if error %}input-error{% endif %}">
-            <input type="password" name="password" placeholder="Contraseña" required class="{% if error %}input-error{% endif %}">
-            <button type="submit">Ingresar</button>
+            <label for="cuil">CUIL</label>
+            <input type="text" name="username" id="cuil" placeholder="Ingresa tu CUIL sin guiones" maxlength="13" required class="{% if error %}input-error{% endif %}">
+
+            <label for="password">Contraseña</label>
+            <input type="password" name="password" id="password" placeholder="Ingresa tu contraseña" required class="{% if error %}input-error{% endif %}">
+
+            <button type="submit">INGRESAR</button>
         </form>
     </div>
 </body>
