@@ -61,6 +61,20 @@
             margin: auto;
             top: 50%;
             transform: translateY(-50%);
+            opacity: 0; /* oculto al inicio */
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        /* Animación fadeInUp */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(-40%) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
         }
 
         .logo-container {
@@ -130,6 +144,7 @@
 
         button:hover {
             background-color: #4d8c9a;
+            transform: translateY(-2px);
         }
 
         .error {
