@@ -59,7 +59,7 @@
             max-width: 400px;
             text-align: center;
             margin: auto;
-            top: 50%;
+            top: 46%;
             transform: translateY(-50%);
             opacity: 0; /* oculto al inicio */
             animation: fadeInUp 1s ease forwards;
@@ -162,6 +162,20 @@
             border: 2px solid #E3342F !important;
             background-color: #fff8f8;
         }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 3;
+            text-align: center;
+            padding: 2px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #444;
+            background-color: #f1f1f1;
+            border-top: 1px solid #ccc;
+        }
     </style>
 </head>
 
@@ -226,5 +240,9 @@ document.addEventListener("DOMContentLoaded", function () {
             <button type="submit">INGRESAR</button>
         </form>
     </div>
+
+    <footer class="footer">
+        <p>Mesa de ayuda: 4305726 | 4305727</p>
+    </footer>
 </body>
 </html>
